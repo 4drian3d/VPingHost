@@ -7,6 +7,7 @@ plugins {
 
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
@@ -28,14 +29,9 @@ tasks {
     }
 }
 
-sourceSets {
-    main {
-        blossom {
-            javaSources {
-                property("version", project.version.toString())
-            }
-        }
+sourceSets.main {
+    blossom.javaSources {
+        property("version", project.version.toString())
     }
 }
-
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
