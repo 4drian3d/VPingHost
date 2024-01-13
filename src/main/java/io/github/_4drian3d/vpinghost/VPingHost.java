@@ -74,30 +74,30 @@ public final class VPingHost {
         final var node = BrigadierCommand.literalArgumentBuilder("pinghost")
                 .requires(src -> src.hasPermission("pinghost.command"))
                 .then(BrigadierCommand.requiredArgumentBuilder("address", StringArgumentType.string())
-					.executes(ctx -> {
-                        final CommandSource source = ctx.getSource();
-                        if (isInCooldown(source)) {
-                            return Command.SINGLE_SUCCESS;
-                        }
-						pingAddressFromProtocol(source, StringArgumentType.getString(ctx, "address"), ProtocolVersion.MAXIMUM_VERSION);
-						return Command.SINGLE_SUCCESS;
-					})
-                    .then(BrigadierCommand.requiredArgumentBuilder("protocol", IntegerArgumentType.integer())
-                        .suggests((ctx, builder) -> {
-                            SUPPORTED_PROTOCOLS.forEach(builder::suggest);
-                            return builder.buildFuture();
-                        })
                         .executes(ctx -> {
                             final CommandSource source = ctx.getSource();
                             if (isInCooldown(source)) {
                                 return Command.SINGLE_SUCCESS;
                             }
-                            int protocol = IntegerArgumentType.getInteger(ctx, "protocol");
-                            final ProtocolVersion version = ProtocolVersion.getProtocolVersion(protocol);
-                            pingAddressFromProtocol(source, StringArgumentType.getString(ctx, "address"), version);
+                            pingAddressFromProtocol(source, StringArgumentType.getString(ctx, "address"), ProtocolVersion.MAXIMUM_VERSION);
                             return Command.SINGLE_SUCCESS;
                         })
-                    )
+                        .then(BrigadierCommand.requiredArgumentBuilder("protocol", IntegerArgumentType.integer())
+                                .suggests((ctx, builder) -> {
+                                    SUPPORTED_PROTOCOLS.forEach(builder::suggest);
+                                    return builder.buildFuture();
+                                })
+                                .executes(ctx -> {
+                                    final CommandSource source = ctx.getSource();
+                                    if (isInCooldown(source)) {
+                                        return Command.SINGLE_SUCCESS;
+                                    }
+                                    final int protocol = IntegerArgumentType.getInteger(ctx, "protocol");
+                                    final ProtocolVersion version = ProtocolVersion.getProtocolVersion(protocol);
+                                    pingAddressFromProtocol(source, StringArgumentType.getString(ctx, "address"), version);
+                                    return Command.SINGLE_SUCCESS;
+                                })
+                        )
                 );
         final BrigadierCommand command = new BrigadierCommand(node);
         final CommandMeta meta = commandManager.metaBuilder(command)
@@ -110,7 +110,7 @@ public final class VPingHost {
         final int charAtSeparator = string.indexOf(':');
         if (charAtSeparator != -1) {
             final String host = string.substring(0, charAtSeparator);
-            final String port = string.substring(charAtSeparator+1);
+            final String port = string.substring(charAtSeparator + 1);
             return new InetSocketAddress(host, Integer.parseInt(port));
         } else {
             return new InetSocketAddress(string, 25565);

@@ -8,15 +8,15 @@ import java.util.List;
 @ConfigSerializable
 public class Configuration {
     @Comment("""
-        Ping Format
-        Placeholders:
-        -| <description>
-          Shows you the description of the motd
-        -| <json>
-          It shows you the motd description directly in json format
-        -| <protocol>
-          It shows you the protocol with which the server was pinged
-        """)
+            Ping Format
+            Placeholders:
+            -| <description>
+              Shows you the description of the motd
+            -| <json>
+              It shows you the motd description directly in json format
+            -| <protocol>
+              It shows you the protocol with which the server was pinged
+            """)
     public List<String> pingFormat = List.of(
             "<gray>Server:</gray> <white><server>",
             "<gray>Component Description:</gray>",

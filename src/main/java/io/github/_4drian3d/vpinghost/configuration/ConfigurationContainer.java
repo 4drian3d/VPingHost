@@ -55,7 +55,7 @@ public final class ConfigurationContainer {
                         .shouldCopyDefaults(true)
                         .header("VPingHost | by 4drian3d\n")
                 )
-                .path(path.resolve(file+".conf"))
+                .path(path.resolve(file + ".conf"))
                 .build();
 
 
@@ -65,7 +65,7 @@ public final class ConfigurationContainer {
             node.set(Configuration.class, config);
             loader.save(node);
             return new ConfigurationContainer(config, loader, logger);
-        } catch (ConfigurateException exception){
+        } catch (ConfigurateException exception) {
             logger.error("Could not load configuration file", exception);
             return null;
         }
