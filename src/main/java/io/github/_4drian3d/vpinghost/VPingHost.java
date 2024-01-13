@@ -72,6 +72,7 @@ public final class VPingHost {
         logger.info("Starting VPingHost");
         configurationContainer = ConfigurationContainer.load(logger, dataDirectory, "config");
         final var node = BrigadierCommand.literalArgumentBuilder("pinghost")
+                .requires(src -> src.hasPermission("pinghost.command"))
                 .then(BrigadierCommand.requiredArgumentBuilder("address", StringArgumentType.string())
 					.executes(ctx -> {
                         final CommandSource source = ctx.getSource();
